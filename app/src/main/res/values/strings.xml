@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">VkEducation</string>
+
+    <string name="category_app">Приложения</string>
+    <string name="category_game">Игры</string>
+
+    <string name="app_details_age">Возраст</string>
+    <string name="app_details_size">Размер</string>
+
+    <string name="install">Установить</string>
+
+    <string name="app_details_screenshots">Скриншоты</string>
+
+    <string name="app_details_description">Описание приложения</string>
+    <string name="app_details_read_more">Читать подробнее</string>
+
+    <string name="app_details_developer">Разработчик</string>
+
+    <string name="under_developement">В процессе разработки</string>
 </resources>

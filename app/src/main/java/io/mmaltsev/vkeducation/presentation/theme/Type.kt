@@ -1,4 +1,4 @@
-package io.mmaltsev.vkeducation.ui.theme
+package io.mmaltsev.vkeducation.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

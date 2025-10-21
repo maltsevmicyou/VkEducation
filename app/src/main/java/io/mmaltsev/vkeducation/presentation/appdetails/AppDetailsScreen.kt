@@ -1,4 +1,4 @@
-package io.mmaltsev.vkeducation
+package io.mmaltsev.vkeducation.presentation.appdetails
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -20,13 +20,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.mmaltsev.vkeducation.ui.theme.VkEducationTheme
+import io.mmaltsev.vkeducation.R
+import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
 @Composable
 fun AppDetailsScreen(
     modifier: Modifier = Modifier,
 ) {
-    val app = remember { getApp() }
+    val appDetails = remember { getApp() }
 
     val context = LocalContext.current
     val underDevelopmentText = stringResource(R.string.under_developement)
@@ -45,7 +46,7 @@ fun AppDetailsScreen(
         )
         Spacer(Modifier.height(8.dp))
         AppDetailsHeader(
-            app = app,
+            appDetails = appDetails,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
         Spacer(Modifier.height(16.dp))
@@ -59,12 +60,12 @@ fun AppDetailsScreen(
         )
         Spacer(Modifier.height(12.dp))
         ScreenshotsList(
-            screenshotUrlList = app.screenshotUrlList,
+            screenshotUrlList = appDetails.screenshotUrlList,
             contentPadding = PaddingValues(horizontal = 16.dp),
         )
         Spacer(Modifier.height(12.dp))
         AppDescription(
-            description = app.description,
+            description = appDetails.description,
             collapsed = descriptionCollapsed,
             onReadMoreClick = {
                 descriptionCollapsed = true
@@ -80,7 +81,7 @@ fun AppDetailsScreen(
         )
         Spacer(Modifier.height(12.dp))
         Developer(
-            name = app.developer,
+            name = appDetails.developer,
             onClick = {
                 Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
             },
@@ -92,7 +93,7 @@ fun AppDetailsScreen(
 }
 
 // В будущем заменим этот метод на вызов API.
-private fun getApp(): App = App(
+private fun getApp(): AppDetails = AppDetails(
     name = "Гильдия Героев: Экшен ММО РПГ",
     developer = "VK Play",
     category = Category.GAME,

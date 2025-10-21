@@ -1,4 +1,4 @@
-package io.mmaltsev.vkeducation.presentation.appdetails
+package io.mmaltsev.vkeducation.domain.appdetails
 
 data class AppDetails(
     val name: String,

@@ -16,11 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             VkEducationTheme {
-                AppDetailsScreen(
-                    Modifier
-                        .fillMaxSize()
-                        .safeDrawingPadding()
-                )
+                AppDetailsScreen()
             }
         }
     }

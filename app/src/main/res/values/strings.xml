@@ -16,5 +16,8 @@
 
     <string name="app_details_developer">Разработчик</string>
 
-    <string name="under_developement">В процессе разработки</string>
+    <string name="under_development">В процессе разработки</string>
+
+    <string name="app_details_error">Произошла непредвиденная ошибка</string>
+    <string name="app_details_error_refresh">Перезагрузить</string>
 </resources>

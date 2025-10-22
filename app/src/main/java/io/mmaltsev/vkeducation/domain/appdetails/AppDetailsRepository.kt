@@ -1,5 +1,5 @@
 package io.mmaltsev.vkeducation.domain.appdetails
 
 interface AppDetailsRepository {
-    suspend fun get(): AppDetails
+    suspend fun getAppDetails(id: String): AppDetails
 }

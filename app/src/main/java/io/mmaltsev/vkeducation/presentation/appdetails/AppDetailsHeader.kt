@@ -86,18 +86,36 @@ fun AppDetailsHeader(
     }
 }
 
-// Статичные строки, которые не приходят из бэкенда
-// нужно хранить в ресурсах (strings.xml).
+// Используем сериализованные имена категорий, которые приходят из API
 @Composable
 private fun getCategoryText(category: Category): String = when (category) {
-    Category.APP -> stringResource(R.string.category_app)
-    Category.GAME -> stringResource(R.string.category_game)
+    Category.APP -> "Приложения"
+    Category.GAME -> "Игры"
+    Category.PRODUCTIVITY -> "Производительность"
+    Category.SOCIAL -> "Социальные сети"
+    Category.EDUCATION -> "Образование"
+    Category.ENTERTAINMENT -> "Развлечения"
+    Category.MUSIC -> "Музыка"
+    Category.VIDEO -> "Видео"
+    Category.PHOTOGRAPHY -> "Фотография"
+    Category.HEALTH -> "Здоровье"
+    Category.SPORTS -> "Спорт"
+    Category.NEWS -> "Новости"
+    Category.BOOKS -> "Книги"
+    Category.BUSINESS -> "Бизнес"
+    Category.FINANCE -> "Финансы"
+    Category.TRAVEL -> "Путешествия"
+    Category.MAPS -> "Карты"
+    Category.FOOD -> "Еда"
+    Category.SHOPPING -> "Покупки"
+    Category.UTILITIES -> "Утилиты"
 }
 
 @Preview
 @Composable
 private fun Preview() {
     val appDetails = AppDetails(
+        id = "fa2e31b8-1234-4cf7-9914-108a170a1b01",
         name = "Гильдия Героев: Экшен ММО РПГ",
         developer = "VK Play",
         category = Category.GAME,

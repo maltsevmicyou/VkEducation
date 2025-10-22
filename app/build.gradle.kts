@@ -1,7 +1,13 @@
+import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt.android)
+//    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -28,14 +34,22 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility =  JavaVersion.VERSION_1_8
     }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_11
+//        targetCompatibility = JavaVersion.VERSION_11
+//    }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
+    }
+
+    hilt {
+        enableAggregatingTask = false
     }
 }
 
@@ -59,4 +73,16 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.okhttp)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+    // Принудительно обновить kotlinx-metadata для решения проблемы kapt
+//    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
 }

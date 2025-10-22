@@ -4,6 +4,7 @@ import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
 
 class AppDetailsMapper {
     fun toDomain(dto: AppDetailsDto): AppDetails = AppDetails(
+        id = dto.id,
         name = dto.name,
         developer = dto.developer,
         category = dto.category,

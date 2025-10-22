@@ -49,7 +49,7 @@ fun AppDetailsContent(
         )
         Spacer(Modifier.height(12.dp))
         ScreenshotsList(
-            screenshotUrlList = appDetails.screenshotUrlList,
+            screenshotUrlList = listOf("1", "2", "3"),
             contentPadding = PaddingValues(horizontal = 16.dp),
         )
         Spacer(Modifier.height(12.dp))
@@ -84,6 +84,7 @@ private fun Preview() {
         AppDetailsContent(
             content = AppDetailsState.Content(
                 appDetails = AppDetails(
+                    id = "fa2e31b8-1234-4cf7-9914-108a170a1b01",
                     name = "Гильдия Героев: Экшен ММО РПГ",
                     developer = "VK Play",
                     category = Category.GAME,

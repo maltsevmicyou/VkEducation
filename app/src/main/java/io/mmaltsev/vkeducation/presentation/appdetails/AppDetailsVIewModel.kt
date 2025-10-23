@@ -9,6 +9,8 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -49,16 +51,14 @@ class AppDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = AppDetailsState.Loading
 
-            runCatching {
-                val appDetails = getAppDetailsUseCase("fa2e31b8-1234-4cf7-9914-108a170a1b01")
-
+            getAppDetailsUseCase("fa2e31b8-1234-4cf7-9914-108a170a1b01").catch { e ->
+                _state.value = AppDetailsState.Error
+                Log.d("HOHOHO", "ERROR $e")
+            }.collect { appDetails ->
                 _state.value = AppDetailsState.Content(
                     appDetails = appDetails,
-                    descriptionCollapsed = false,
+                    descriptionCollapsed = false
                 )
-            }.onFailure {
-                Log.d("HOHOHO", "ERROR : $it")
-                _state.value = AppDetailsState.Error
             }
         }
     }

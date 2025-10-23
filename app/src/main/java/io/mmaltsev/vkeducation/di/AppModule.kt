@@ -1,12 +1,18 @@
 package io.mmaltsev.vkeducation.di
 
+import android.app.Application
+import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.mmaltsev.vkeducation.data.appdetails.AppApi
+import io.mmaltsev.vkeducation.data.appdetails.AppDetailsMapper
 import io.mmaltsev.vkeducation.data.appdetails.AppDetailsRepositoryImpl
+import io.mmaltsev.vkeducation.data.appdetails.local.AppDatabase
+import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsDao
+import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsEntityMapper
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetailsRepository
 import io.mmaltsev.vkeducation.domain.appdetails.GetAppDetailsUseCase
 import kotlinx.serialization.json.Json
@@ -44,5 +50,33 @@ object AppModule {
     @Singleton
     fun provideGetAppDetailsUseCase(repository: AppDetailsRepository): GetAppDetailsUseCase {
         return GetAppDetailsUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(app: Application): AppDatabase {
+        return Room.databaseBuilder(
+            app,
+            AppDatabase::class.java,
+            AppDatabase.DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppDetailsDao(database: AppDatabase): AppDetailsDao {
+        return database.appDetailsDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppDetailsEntityMapper(): AppDetailsEntityMapper {
+        return AppDetailsEntityMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppDetailsMapper(): AppDetailsMapper {
+        return AppDetailsMapper()
     }
 }

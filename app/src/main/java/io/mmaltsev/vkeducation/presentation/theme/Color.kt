@@ -12,6 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 val RuStoreBlue = Color(0xff2c71f4)
 
+val RuStoreBlueLight = Color(0xff4686df)
 val DarkBackground = Color(0xFF1A1C20)
 
 val LightBackground = Color(0xFFFFFFFF)

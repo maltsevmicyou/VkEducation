@@ -48,11 +48,13 @@ fun AppDetailsContent(
                 .padding(horizontal = 16.dp)
         )
         Spacer(Modifier.height(12.dp))
-        ScreenshotsList(
-            screenshotUrlList = listOf("1", "2", "3"),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-        )
-        Spacer(Modifier.height(12.dp))
+        appDetails.screenshotUrlList?.takeIf { it.isNotEmpty() }?.let { screenshotUrlList ->
+            ScreenshotsList(
+                screenshotUrlList = screenshotUrlList,
+                contentPadding = PaddingValues(horizontal = 16.dp),
+            )
+            Spacer(Modifier.height(12.dp))
+        }
         AppDescription(
             description = appDetails.description,
             collapsed = descriptionCollapsed,

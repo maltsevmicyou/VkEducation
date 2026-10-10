@@ -14,6 +14,7 @@ data class AppDetailsDto(
     val size: Double,
     @SerialName("iconUrl")
     val icon: String,
+    @SerialName("screenshotUrlList")
     val screenshots: List<String>? = null,
     val description: String,
 )

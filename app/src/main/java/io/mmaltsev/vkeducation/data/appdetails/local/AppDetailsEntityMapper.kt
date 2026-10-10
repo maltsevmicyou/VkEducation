@@ -1,6 +1,10 @@
 package io.mmaltsev.vkeducation.data.appdetails.local
 
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class AppDetailsEntityMapper {
@@ -13,7 +17,9 @@ class AppDetailsEntityMapper {
         ageRating = domain.ageRating,
         size = domain.size,
         iconUrl = domain.iconUrl,
-        screenshots = null,
+        screenshots = domain.screenshotUrlList?.let {
+            Json.encodeToString(ListSerializer(String.serializer()), it)
+        },
         description = domain.description
     )
 
@@ -25,7 +31,11 @@ class AppDetailsEntityMapper {
         ageRating = entity.ageRating,
         size = entity.size,
         iconUrl = entity.iconUrl,
-        screenshotUrlList = null,
+        screenshotUrlList = entity.screenshots?.let { serializedScreenshots ->
+            runCatching {
+                Json.decodeFromString(ListSerializer(String.serializer()), serializedScreenshots)
+            }.getOrNull()
+        },
         description = entity.description
     )
 }

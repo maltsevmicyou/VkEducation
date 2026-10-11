@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun AppDetailsScreen() {
     val viewModel = hiltViewModel<AppDetailsViewModel>()
+    val context = LocalContext.current
     val state by viewModel.state.collectAsState()
     val events = viewModel.events
 
@@ -67,7 +69,12 @@ fun AppDetailsScreen() {
                         viewModel.showUnderDevelopmentMessage()
                     },
                     onShareClick = {
-                        viewModel.showUnderDevelopmentMessage()
+                        context.startActivity(
+                            createAppDetailsShareChooserIntent(
+                                context = context,
+                                appDetails = currentState.appDetails,
+                            )
+                        )
                     },
                     onInstallClick = {
                         viewModel.showUnderDevelopmentMessage()

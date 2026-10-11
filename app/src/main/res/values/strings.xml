@@ -18,6 +18,9 @@
 
     <string name="under_development">В процессе разработки</string>
 
+    <string name="app_details_share_chooser_title">Поделиться приложением</string>
+    <string name="app_details_share_text">%1$s\nРазработчик: %2$s\n\n%3$s</string>
+
     <string name="app_details_error">Произошла непредвиденная ошибка</string>
     <string name="app_details_error_refresh">Перезагрузить</string>
 </resources>

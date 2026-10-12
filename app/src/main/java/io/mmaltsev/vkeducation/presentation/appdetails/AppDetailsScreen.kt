@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import io.mmaltsev.vkeducation.R
 import kotlinx.coroutines.flow.Flow
 
@@ -74,6 +73,9 @@ fun AppDetailsScreen() {
                     },
                     onReadMoreClick = {
                         viewModel.collapseDescription()
+                    },
+                    onSimilarAppDownloadClick = {
+                        viewModel.showUnderDevelopmentMessage()
                     },
                     onDeveloperClick = {
                         viewModel.showUnderDevelopmentMessage()

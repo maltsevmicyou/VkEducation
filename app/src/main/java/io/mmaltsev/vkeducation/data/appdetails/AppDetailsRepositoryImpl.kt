@@ -1,7 +1,6 @@
 package io.mmaltsev.vkeducation.data.appdetails
 
 import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsDao
-import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsEntity
 import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsEntityMapper
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetailsRepository
@@ -9,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 import javax.inject.Inject
 
 class AppDetailsRepositoryImpl @Inject constructor(

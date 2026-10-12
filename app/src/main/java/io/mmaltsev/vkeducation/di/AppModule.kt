@@ -7,6 +7,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.mmaltsev.vkeducation.data.appdetails.SimilarAppMapper
+import io.mmaltsev.vkeducation.data.appdetails.SimilarAppsApi
+import io.mmaltsev.vkeducation.data.appdetails.SimilarAppsRepositoryImpl
+import io.mmaltsev.vkeducation.domain.appdetails.GetSimilarAppsUseCase
+import io.mmaltsev.vkeducation.domain.appdetails.SimilarAppsRepository
 import io.mmaltsev.vkeducation.data.appdetails.AppApi
 import io.mmaltsev.vkeducation.data.appdetails.AppDetailsMapper
 import io.mmaltsev.vkeducation.data.appdetails.AppDetailsRepositoryImpl
@@ -90,4 +95,24 @@ object AppModule {
     ): AppDetailsRepository {
         return AppDetailsRepositoryImpl(api, dao, mapper, entityMapper)
     }
+
+    @Provides
+    @Singleton
+    fun provideSimilarAppsApi(): SimilarAppsApi = SimilarAppsApi()
+
+    @Provides
+    @Singleton
+    fun provideSimilarAppMapper(): SimilarAppMapper = SimilarAppMapper()
+
+    @Provides
+    @Singleton
+    fun provideSimilarAppsRepository(
+        api: SimilarAppsApi,
+        mapper: SimilarAppMapper,
+    ): SimilarAppsRepository = SimilarAppsRepositoryImpl(api, mapper)
+
+    @Provides
+    @Singleton
+    fun provideGetSimilarAppsUseCase(repository: SimilarAppsRepository): GetSimilarAppsUseCase =
+        GetSimilarAppsUseCase(repository)
 }

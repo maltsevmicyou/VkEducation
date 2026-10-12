@@ -1,5 +1,7 @@
 package io.mmaltsev.vkeducation.presentation.appdetails
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
+import io.mmaltsev.vkeducation.domain.appdetails.SimilarApp
 import io.mmaltsev.vkeducation.domain.appdetails.Category
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
@@ -25,12 +28,13 @@ fun AppDetailsContent(
     onInstallClick: () -> Unit,
     onReadMoreClick: () -> Unit,
     onDeveloperClick: () -> Unit,
+    onSimilarAppDownloadClick: (SimilarApp) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appDetails = content.appDetails
     val descriptionCollapsed = content.descriptionCollapsed
 
-    Column(modifier) {
+    Column(modifier.verticalScroll(rememberScrollState())) {
         Toolbar(
             onBackClick = onBackClick,
             onShareClick = onShareClick,
@@ -47,6 +51,14 @@ fun AppDetailsContent(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         )
+        if (content.similarApps.isNotEmpty()) {
+            Spacer(Modifier.height(12.dp))
+            SimilarApps(
+                apps = content.similarApps,
+                onDownloadClick = onSimilarAppDownloadClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
         Spacer(Modifier.height(12.dp))
         ScreenshotsList(
             screenshotUrlList = listOf("1", "2", "3"),
@@ -99,6 +111,13 @@ private fun Preview() {
                     iconUrl = "https://static.rustore.ru/imgproxy/APsbtHxkVa4MZ0DXjnIkSwFQ_KVIcqHK9o3gHY6pvOQ/preset:web_app_icon_62/plain/https://static.rustore.ru/apk/393868735/content/ICON/3f605e3e-f5b3-434c-af4d-77bc5f38820e.png@webp",
                     description = "Легендарный рейд героев в Фэнтези РПГ. Станьте героем гильдии и зразите мастера подземелья!"
                 ),
+                similarApps = List(15) { index ->
+                    SimilarApp(
+                        id = "similar-app-$index",
+                        name = "Гильдия Героев: Экшен ММО РПГ: $index",
+                        iconUrl = "https://static.rustore.ru/imgproxy/APsbtHxkVa4MZ0DXjnIkSwFQ_KVIcqHK9o3gHY6pvOQ/preset:web_app_icon_62/plain/https://static.rustore.ru/apk/393868735/content/ICON/3f605e3e-f5b3-434c-af4d-77bc5f38820e.png@webp",
+                    )
+                },
                 descriptionCollapsed = false,
             ),
             onReadMoreClick = {},
@@ -106,6 +125,7 @@ private fun Preview() {
             onShareClick = {},
             onInstallClick = {},
             onDeveloperClick = {},
+            onSimilarAppDownloadClick = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

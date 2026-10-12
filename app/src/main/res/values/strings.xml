@@ -20,4 +20,6 @@
 
     <string name="app_details_error">Произошла непредвиденная ошибка</string>
     <string name="app_details_error_refresh">Перезагрузить</string>
+    <string name="app_details_similar_apps">Вам может понравиться</string>
+    <string name="app_details_download">Скачать</string>
 </resources>

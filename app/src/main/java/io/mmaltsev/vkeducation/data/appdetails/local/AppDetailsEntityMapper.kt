@@ -1,7 +1,6 @@
 package io.mmaltsev.vkeducation.data.appdetails.local
 
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
-import kotlinx.serialization.json.Json
 
 class AppDetailsEntityMapper {
 

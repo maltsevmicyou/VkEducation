@@ -19,6 +19,7 @@ import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
 import io.mmaltsev.vkeducation.domain.appdetails.SimilarApp
 import io.mmaltsev.vkeducation.domain.appdetails.Category
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
+import io.mmaltsev.vkeducation.presentation.applist.SquadInfo
 
 @Composable
 fun AppDetailsContent(
@@ -29,6 +30,7 @@ fun AppDetailsContent(
     onReadMoreClick: () -> Unit,
     onDeveloperClick: () -> Unit,
     onSimilarAppDownloadClick: (SimilarApp) -> Unit,
+    onShowcaseAppClick: (SquadInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appDetails = content.appDetails
@@ -86,6 +88,12 @@ fun AppDetailsContent(
                 .fillMaxWidth()
                 .padding(start = 16.dp),
         )
+        Spacer(Modifier.height(12.dp))
+        Showcase(
+            apps = showcaseApps,
+            onAppClick =  onShowcaseAppClick
+        )
+        Spacer(Modifier.height(12.dp))
     }
 }
 
@@ -126,6 +134,7 @@ private fun Preview() {
             onInstallClick = {},
             onDeveloperClick = {},
             onSimilarAppDownloadClick = {},
+            onShowcaseAppClick = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

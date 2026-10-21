@@ -20,7 +20,7 @@ import io.mmaltsev.vkeducation.R
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun AppDetailsScreen() {
+fun AppDetailsScreen(onStoreAppClick: () -> Unit, app: Any) {
     val viewModel = hiltViewModel<AppDetailsViewModel>()
     val state by viewModel.state.collectAsState()
     val events = viewModel.events

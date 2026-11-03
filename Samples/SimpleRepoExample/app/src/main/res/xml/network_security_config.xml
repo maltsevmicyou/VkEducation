@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Учебный тестовый сервер доступен только по HTTP и по голому IP,
+         поэтому cleartext разрешён точечно для этого адреса. -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">185.103.109.134</domain>
+    </domain-config>
+</network-security-config>

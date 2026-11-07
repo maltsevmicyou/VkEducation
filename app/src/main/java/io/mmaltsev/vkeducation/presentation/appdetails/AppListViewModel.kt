@@ -2,7 +2,7 @@ package io.mmaltsev.vkeducation.presentation.appdetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.mmaltsev.vkeducation.data.appdetails.AppListRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel // <-- Добавь
 import io.mmaltsev.vkeducation.domain.appdetails.AppItem
 import io.mmaltsev.vkeducation.domain.appdetails.AppListRepository
 import kotlinx.coroutines.channels.Channel
@@ -10,21 +10,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject // <-- Добавь
 
-data class AppListUiState(
-    val apps: List<AppItem> = emptyList(),
-    val isLoading: Boolean = true
-)
+@HiltViewModel // <-- Говорим Hilt, что это ViewModel
+class AppListViewModel @Inject constructor( // <-- Hilt сам подставит сюда AppListRepositoryImpl
+    private val repository: AppListRepository
+) : ViewModel() {
 
-sealed class AppListEvent {
-    data class ShowSnackbar(val message: String) : AppListEvent()
-    data class ShowError(val message: String) : AppListEvent()
-}
-
-class AppListViewModel : ViewModel() {
-
-    // Создаем Repository (в реальном проекте это делал бы Hilt/DI)
-    private val repository: AppListRepository = AppListRepositoryImpl()
+    // УДАЛИ отсюда строку: private val repository: AppListRepository = AppListRepositoryImpl()
 
     private val _uiState = MutableStateFlow(AppListUiState())
     val uiState: StateFlow<AppListUiState> = _uiState
@@ -33,7 +26,6 @@ class AppListViewModel : ViewModel() {
     val events = _events.receiveAsFlow()
 
     init {
-        // Загружаем данные при создании ViewModel
         loadApps()
     }
 
@@ -41,14 +33,8 @@ class AppListViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _uiState.value = _uiState.value.copy(isLoading = true)
-
-                // Получаем данные через Repository
                 val apps = repository.getAppList()
-
-                _uiState.value = AppListUiState(
-                    apps = apps,
-                    isLoading = false
-                )
+                _uiState.value = AppListUiState(apps = apps, isLoading = false)
             } catch (e: Exception) {
                 _events.send(AppListEvent.ShowError("Ошибка загрузки: ${e.message}"))
                 _uiState.value = _uiState.value.copy(isLoading = false)

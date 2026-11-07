@@ -2,16 +2,14 @@ package io.mmaltsev.vkeducation.data.appdetails
 
 import io.mmaltsev.vkeducation.domain.appdetails.AppItem
 import io.mmaltsev.vkeducation.domain.appdetails.AppListRepository
+import javax.inject.Inject // <-- Добавь этот импорт
 
-// Реализация Repository: берет DTO, маппит в Domain, возвращает
-class AppListRepositoryImpl : AppListRepository {
+class AppListRepositoryImpl @Inject constructor() : AppListRepository {
 
     override suspend fun getAppList(): List<AppItem> {
-        // Берем хардкод DTO и конвертируем через Mapper
         return fakeAppListDto.map { it.toDomain() }
     }
 
-    // Для витрины
     suspend fun getShowcaseApps(): List<AppItem> {
         return fakeShowcaseDto.map { it.toDomain() }
     }

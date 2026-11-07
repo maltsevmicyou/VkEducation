@@ -20,7 +20,10 @@ import io.mmaltsev.vkeducation.R
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun AppDetailsScreen() {
+fun AppDetailsScreen(
+    appId: String?,
+    onShowcaseClick: () -> Unit
+) {
     val viewModel = hiltViewModel<AppDetailsViewModel>()
     val state by viewModel.state.collectAsState()
     val events = viewModel.events
@@ -62,7 +65,6 @@ fun AppDetailsScreen() {
                 AppDetailsContent(
                     content = currentState,
                     onBackClick = {
-                        // TODO: Открыть предыдущий экран через Jetpack Navigation
                         viewModel.showUnderDevelopmentMessage()
                     },
                     onShareClick = {
@@ -85,6 +87,8 @@ fun AppDetailsScreen() {
                         .safeDrawingPadding()
                         .padding(contentPadding),
                 )
+
+                ShowcaseBlock(onAppClick = onShowcaseClick)
             }
         }
     }

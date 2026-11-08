@@ -1,6 +1,5 @@
 package io.mmaltsev.vkeducation.presentation.appdetails
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,11 +8,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.mmaltsev.vkeducation.R
+import coil.compose.AsyncImage
 import io.mmaltsev.vkeducation.domain.appdetails.AppItem
 import kotlinx.coroutines.flow.collectLatest
 
@@ -30,9 +28,6 @@ fun AppListScreen(
         viewModel.events.collectLatest { event ->
             when (event) {
                 is AppListEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(event.message)
-                }
-                is AppListEvent.ShowError -> {
                     snackbarHostState.showSnackbar(event.message)
                 }
             }
@@ -53,20 +48,12 @@ fun AppListScreen(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                navigationIcon = {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                        contentDescription = "App Icon",
-                        modifier = Modifier.size(32.dp).padding(start = 8.dp)
-                    )
-                }
+                )
             )
         }
     ) { paddingValues ->
         when {
             uiState.isLoading -> {
-                // Показываем загрузку
                 Box(
                     modifier = Modifier.fillMaxSize().padding(paddingValues),
                     contentAlignment = Alignment.Center
@@ -75,7 +62,6 @@ fun AppListScreen(
                 }
             }
             uiState.apps.isEmpty() -> {
-                // Пустой список
                 Box(
                     modifier = Modifier.fillMaxSize().padding(paddingValues),
                     contentAlignment = Alignment.Center
@@ -84,9 +70,11 @@ fun AppListScreen(
                 }
             }
             else -> {
-                // Основной список
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize().padding(paddingValues).padding(horizontal = 16.dp, vertical = 8.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.apps) { app ->
@@ -117,8 +105,8 @@ fun AppItemCard(
             modifier = Modifier.fillMaxWidth().padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = app.iconResId),
+            AsyncImage(
+                model = app.iconUrl,
                 contentDescription = "${app.name} icon",
                 modifier = Modifier.size(40.dp)
             )

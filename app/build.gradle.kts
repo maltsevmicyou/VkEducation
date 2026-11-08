@@ -71,18 +71,18 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    // Network
+    // Network (используем только версии из libs, чтобы не было конфликтов)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp)
 
-    // Hilt (ТОЛЬКО через libs, без хардкода версий!)
+    // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
-    // Room (Единая стабильная версия 2.6.1, чтобы не было конфликтов kapt)
+    // Room (строго 2.6.1)
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
@@ -95,4 +95,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+// 🚀 ЯДЕРНЫЙ ВАРИАНТ: Принудительно заставляем ВСЁ использовать новую версию метаданных 🚀
+// Это решает конфликт между Kotlin 2.x и зашитой в Room старой версией
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
+    }
 }

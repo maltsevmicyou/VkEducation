@@ -1,16 +1,17 @@
 package io.mmaltsev.vkeducation.data.appdetails
 
+import io.mmaltsev.vkeducation.data.appdetails.network.AppApi
+import io.mmaltsev.vkeducation.data.appdetails.network.toDomain
 import io.mmaltsev.vkeducation.domain.appdetails.AppItem
 import io.mmaltsev.vkeducation.domain.appdetails.AppListRepository
-import javax.inject.Inject // <-- Добавь этот импорт
+import javax.inject.Inject
 
-class AppListRepositoryImpl @Inject constructor() : AppListRepository {
+class AppListRepositoryImpl @Inject constructor(
+    private val api: AppApi // Hilt сам предоставит этот интерфейс
+) : AppListRepository {
 
     override suspend fun getAppList(): List<AppItem> {
-        return fakeAppListDto.map { it.toDomain() }
-    }
-
-    suspend fun getShowcaseApps(): List<AppItem> {
-        return fakeShowcaseDto.map { it.toDomain() }
+        // Делаем запрос к сети и маппим результат
+        return api.getCatalog().map { it.toDomain() }
     }
 }

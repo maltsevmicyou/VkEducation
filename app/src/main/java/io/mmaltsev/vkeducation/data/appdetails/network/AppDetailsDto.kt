@@ -1,4 +1,4 @@
-package io.mmaltsev.vkeducation.data.appdetails
+package io.mmaltsev.vkeducation.data.appdetails.network
 
 import io.mmaltsev.vkeducation.domain.appdetails.Category
 import kotlinx.serialization.SerialName
@@ -15,5 +15,5 @@ data class AppDetailsDto(
     @SerialName("iconUrl")
     val icon: String,
     val screenshots: List<String>? = null,
-    val description: String,
+    val description: String
 )

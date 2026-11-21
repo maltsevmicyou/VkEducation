@@ -4,8 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt.android)
-//    id("com.google.dagger.hilt.android")
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp) // <-- ЗАМЕНА: был kotlin.kapt, стал ksp
 }
 
 android {
@@ -31,17 +30,17 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility =  JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-//    compileOptions {
-//        sourceCompatibility = JavaVersion.VERSION_11
-//        targetCompatibility = JavaVersion.VERSION_11
-//    }
+
     kotlinOptions {
         jvmTarget = "1.8"
+        // freeCompilerArgs удалены, они больше не нужны с KSP
     }
+
     buildFeatures {
         compose = true
     }
@@ -50,13 +49,11 @@ android {
         enableAggregatingTask = false
     }
 
-    kapt {
-        arguments {arg("room.schemaLocation", "$projectDir/schemas")}
-    }
+    // Блок kapt полностью удален, он больше не используется
 }
 
 dependencies {
-
+    // Core & Compose
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -65,9 +62,29 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // ViewModel & Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Network
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.okhttp)
+
+    // Hilt (kapt заменен на ksp)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler) // <-- БЫЛО kapt
+    implementation(libs.hilt.navigation.compose)
+
+    // Room (kapt заменен на ksp)
+    implementation("androidx.room:room-runtime:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1") // <-- БЫЛО kapt
+    implementation("androidx.room:room-ktx:2.6.1")
+
+    // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -75,17 +92,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.kotlinx.serialization)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.okhttp)
-
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
-
-    implementation("androidx.room:room-runtime:2.8.3")
-    kapt("androidx.room:room-compiler:2.5.0")
-    implementation("androidx.room:room-ktx:2.8.3")
 }

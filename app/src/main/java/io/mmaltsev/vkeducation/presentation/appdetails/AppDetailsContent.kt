@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
-import io.mmaltsev.vkeducation.domain.appdetails.SimilarApp
 import io.mmaltsev.vkeducation.domain.appdetails.Category
+import io.mmaltsev.vkeducation.domain.appdetails.SimilarApp
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
 @Composable
@@ -45,12 +45,16 @@ fun AppDetailsContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
         Spacer(Modifier.height(16.dp))
+
+        // <-- ПЕРЕДАЕМ installState В КНОПКУ
         InstallButton(
+            installState = content.installState,
             onClick = onInstallClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         )
+
         if (content.similarApps.isNotEmpty()) {
             Spacer(Modifier.height(12.dp))
             SimilarApps(
@@ -119,6 +123,7 @@ private fun Preview() {
                     )
                 },
                 descriptionCollapsed = false,
+                installState = InstallState.NotInstalled // <-- ДОБАВЛЯЕМ ЭТО В ПРЕВЬЮ
             ),
             onReadMoreClick = {},
             onBackClick = {},

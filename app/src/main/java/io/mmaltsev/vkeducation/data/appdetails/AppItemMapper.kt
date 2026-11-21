@@ -9,7 +9,7 @@ fun AppItemDto.toDomain(): AppItem {
         name = name,
         description = description,
         category = category,
-        iconResId = iconResId
+        iconUrl = iconUrl // 👈 ЗДЕСЬ ДОЛЖНО БЫТЬ iconUrl, а не iconResId
     )
 }
 
@@ -20,6 +20,6 @@ fun AppItem.toDto(): AppItemDto {
         name = name,
         description = description,
         category = category,
-        iconResId = iconResId
+        iconUrl = iconUrl // 👈 И ЗДЕСЬ ТОЖЕ
     )
 }

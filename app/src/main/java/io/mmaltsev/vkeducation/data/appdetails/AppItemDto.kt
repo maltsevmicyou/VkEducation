@@ -5,5 +5,5 @@ data class AppItemDto(
     val name: String,
     val description: String,
     val category: String,
-    val iconResId: Int
+    val iconUrl: String // 👈 МЕНЯЕМ Int НА String и переименовываем в iconUrl
 )

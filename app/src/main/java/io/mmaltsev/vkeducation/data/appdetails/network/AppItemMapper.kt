@@ -8,6 +8,6 @@ fun AppCatalogDto.toDomain(): AppItem {
         name = name,
         description = description,
         category = category,
-        iconUrl = iconUrl
+        iconUrl = iconUrl // <-- Теперь используем iconUrl (String), а не iconResId (Int)
     )
 }

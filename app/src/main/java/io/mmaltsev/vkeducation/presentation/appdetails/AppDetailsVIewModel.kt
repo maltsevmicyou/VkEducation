@@ -4,12 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.mmaltsev.vkeducation.domain.appdetails.GetSimilarAppsUseCase
 import io.mmaltsev.vkeducation.domain.appdetails.GetAppDetailsUseCase
+import io.mmaltsev.vkeducation.domain.appdetails.GetSimilarAppsUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -26,18 +26,43 @@ class AppDetailsViewModel @Inject constructor(
     private val _state = MutableStateFlow<AppDetailsState>(AppDetailsState.Loading)
     val state = _state.asStateFlow()
 
-    private val _events = Channel<AppDetailsEvent>(BUFFERED)
+    private val _events = Channel<AppDetailsEvent>(Channel.BUFFERED)
     val events = _events.receiveAsFlow()
 
     private var loadingJob: Job? = null
+    private var installJob: Job? = null // <-- ДОБАВЛЕНО
 
     init {
         getAppDetails()
     }
 
-    fun showUnderDevelopmentMessage() {
-        viewModelScope.launch {
-            _events.send(AppDetailsEvent.UnderDevelopment)
+    // <-- ЗАМЕНА showUnderDevelopmentMessage НА onInstallClick
+    fun onInstallClick() {
+        val current = _state.value as? AppDetailsState.Content ?: return
+
+        if (current.installState is InstallState.Installing) {
+            installJob?.cancel()
+            _state.update { current.copy(installState = InstallState.NotInstalled) }
+        } else {
+            installJob = viewModelScope.launch {
+                emulateInstall()
+            }
+        }
+    }
+
+    private suspend fun emulateInstall() {
+        for (progress in 0..100 step 5) {
+            delay(150)
+            _state.update { currentState ->
+                (currentState as? AppDetailsState.Content)?.copy(
+                    installState = InstallState.Installing(progress)
+                ) ?: currentState
+            }
+        }
+        _state.update { currentState ->
+            (currentState as? AppDetailsState.Content)?.copy(
+                installState = InstallState.Installed
+            ) ?: currentState
         }
     }
 
@@ -63,8 +88,8 @@ class AppDetailsViewModel @Inject constructor(
                     _state.value = AppDetailsState.Content(
                         appDetails = appDetails,
                         similarApps = similarApps,
-                        descriptionCollapsed = (currentState as? AppDetailsState.Content)
-                            ?.descriptionCollapsed ?: false,
+                        descriptionCollapsed = (currentState as? AppDetailsState.Content)?.descriptionCollapsed ?: false,
+                        installState = InstallState.NotInstalled // <-- ЯВНО УКАЗЫВАЕМ
                     )
                 }
             } catch (e: CancellationException) {
@@ -74,5 +99,11 @@ class AppDetailsViewModel @Inject constructor(
                 Log.e("AppDetailsViewModel", "Failed to load app details", e)
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        loadingJob?.cancel()
+        installJob?.cancel() // <-- ОТМЕНЯЕМ ПРИ УНИЧТОЖЕНИИ
     }
 }

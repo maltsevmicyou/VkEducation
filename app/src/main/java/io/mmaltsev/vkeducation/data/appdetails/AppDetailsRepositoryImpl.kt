@@ -2,6 +2,7 @@ package io.mmaltsev.vkeducation.data.appdetails
 
 import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsDao
 import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsEntityMapper
+import io.mmaltsev.vkeducation.data.appdetails.network.AppApi // 👈 ВОТ ЭТА СТРОКА РЕШАЕТ ПРОБЛЕМУ
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetailsRepository
 import kotlinx.coroutines.Dispatchers

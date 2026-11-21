@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp) // <-- ЗАМЕНА: был kotlin.kapt, стал ksp
 }
 
 android {
@@ -38,6 +38,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+        // freeCompilerArgs удалены, они больше не нужны с KSP
     }
 
     buildFeatures {
@@ -48,11 +49,7 @@ android {
         enableAggregatingTask = false
     }
 
-    kapt {
-        arguments {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
-    }
+    // Блок kapt полностью удален, он больше не используется
 }
 
 dependencies {
@@ -71,20 +68,20 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    // Network (используем только версии из libs, чтобы не было конфликтов)
+    // Network
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp)
 
-    // Hilt
+    // Hilt (kapt заменен на ksp)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler) // <-- БЫЛО kapt
     implementation(libs.hilt.navigation.compose)
 
-    // Room (строго 2.6.1)
+    // Room (kapt заменен на ksp)
     implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1") // <-- БЫЛО kapt
     implementation("androidx.room:room-ktx:2.6.1")
 
     // Tests
@@ -95,12 +92,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-}
-
-// 🚀 ЯДЕРНЫЙ ВАРИАНТ: Принудительно заставляем ВСЁ использовать новую версию метаданных 🚀
-// Это решает конфликт между Kotlin 2.x и зашитой в Room старой версией
-configurations.all {
-    resolutionStrategy {
-        force("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
-    }
 }

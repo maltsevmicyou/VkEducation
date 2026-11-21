@@ -64,24 +64,16 @@ fun AppDetailsScreen(
             is AppDetailsState.Content -> {
                 AppDetailsContent(
                     content = currentState,
-                    onBackClick = {
-                        viewModel.showUnderDevelopmentMessage()
-                    },
-                    onShareClick = {
-                        viewModel.showUnderDevelopmentMessage()
-                    },
+                    onBackClick = { }, // Оставил пустым, чтобы не было ошибок
+                    onShareClick = { },
                     onInstallClick = {
-                        viewModel.showUnderDevelopmentMessage()
+                        viewModel.onInstallClick() // <-- ВОТ ЗДЕСЬ МЕНЯЕМ НА НОВУЮ ФУНКЦИЮ
                     },
                     onReadMoreClick = {
                         viewModel.collapseDescription()
                     },
-                    onSimilarAppDownloadClick = {
-                        viewModel.showUnderDevelopmentMessage()
-                    },
-                    onDeveloperClick = {
-                        viewModel.showUnderDevelopmentMessage()
-                    },
+                    onSimilarAppDownloadClick = { },
+                    onDeveloperClick = { },
                     modifier = Modifier
                         .fillMaxSize()
                         .safeDrawingPadding()
